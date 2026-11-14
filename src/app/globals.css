@@ -19,3 +19,9 @@ body {
     color: var(--foreground);
     font-family: var(--font-sans), system-ui, sans-serif;
 }
+
+/* Let the prose <pre> own the code block box; highlight.js only colours tokens. */
+.prose pre code.hljs {
+    padding: 0;
+    background: transparent;
+}

@@ -1,4 +1,5 @@
 import type { AnchorHTMLAttributes } from 'react'
+import type { ExtraProps } from 'react-markdown'
 import ReactMarkdown from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
 import rehypeSanitize from 'rehype-sanitize'
@@ -16,7 +17,13 @@ const isExternal = (href: string | undefined) => {
     }
 }
 
-const Link = ({ href, children, ...rest }: AnchorHTMLAttributes<HTMLAnchorElement>) => {
+const Link = ({
+    href,
+    children,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- drop the hast node so it is not rendered as an attribute
+    node,
+    ...rest
+}: AnchorHTMLAttributes<HTMLAnchorElement> & ExtraProps) => {
     if (!isExternal(href)) {
         return (
             <a href={href} {...rest}>
