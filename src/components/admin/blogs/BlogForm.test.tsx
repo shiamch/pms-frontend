@@ -13,8 +13,18 @@ vi.mock('next/navigation', () => ({
 }))
 
 vi.mock('./MarkdownField', () => ({
-    MarkdownField: ({ value, onChange }: { value?: string; onChange?: (v: string) => void }) => (
-        <textarea aria-label="Content" value={value ?? ''} onChange={(e) => onChange?.(e.target.value)} />
+    MarkdownField: ({
+        value,
+        onChange,
+    }: {
+        value?: string
+        onChange?: (v: string) => void
+    }) => (
+        <textarea
+            aria-label="Content"
+            value={value ?? ''}
+            onChange={(e) => onChange?.(e.target.value)}
+        />
     ),
 }))
 
@@ -89,14 +99,22 @@ describe('BlogForm', () => {
     })
 
     it('tells the owner when the backend changed the slug', async () => {
-        blogsApi.updateBlog.mockResolvedValue({ ...published, status: 'draft', slug: 'taken-2' })
+        blogsApi.updateBlog.mockResolvedValue({
+            ...published,
+            status: 'draft',
+            slug: 'taken-2',
+        })
         renderForm({ ...published, status: 'draft' })
         const slug = screen.getByLabelText('Slug')
         await userEvent.clear(slug)
         await userEvent.type(slug, 'taken')
         await save()
 
-        expect(await screen.findByText('Saved with slug “taken-2” because “taken” was taken.')).toBeInTheDocument()
+        expect(
+            await screen.findByText(
+                'Saved with slug “taken-2” because “taken” was taken.',
+            ),
+        ).toBeInTheDocument()
         expect(blogsApi.updateBlog).toHaveBeenCalledWith(7, { slug: 'taken' })
     })
 
@@ -114,21 +132,27 @@ describe('BlogForm', () => {
     })
 
     it('shows backend field errors and keeps typed values', async () => {
-        blogsApi.updateBlog.mockRejectedValue(validationError('title', 'Title must be at most 200 characters'))
+        blogsApi.updateBlog.mockRejectedValue(
+            validationError('title', 'Title must be at most 200 characters'),
+        )
         renderForm(published)
         const title = screen.getByLabelText('Title')
         await userEvent.clear(title)
         await userEvent.type(title, 'New title')
         await save()
 
-        expect(await screen.findByText('Title must be at most 200 characters')).toBeInTheDocument()
+        expect(
+            await screen.findByText('Title must be at most 200 characters'),
+        ).toBeInTheDocument()
         expect(screen.getByLabelText('Title')).toHaveValue('New title')
     })
 
     it('shows other errors and keeps typed values', async () => {
         blogsApi.updateBlog.mockRejectedValue(new AxiosError('Network Error'))
         renderForm(published)
-        fireEvent.change(screen.getByLabelText('Content'), { target: { value: 'Long draft' } })
+        fireEvent.change(screen.getByLabelText('Content'), {
+            target: { value: 'Long draft' },
+        })
         await save()
 
         expect(await screen.findByText('Cannot reach the server.')).toBeInTheDocument()

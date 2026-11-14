@@ -8,7 +8,9 @@ import { Markdown } from '@/lib/markdown/Markdown'
 
 const MDEditor = dynamic(() => import('@uiw/react-md-editor/nohighlight'), {
     ssr: false,
-    loading: () => <div className="h-[60vh] rounded-lg border border-neutral-200 bg-neutral-50" />,
+    loading: () => (
+        <div className="h-[60vh] rounded-lg border border-neutral-200 bg-neutral-50" />
+    ),
 })
 
 interface MarkdownFieldProps {
@@ -19,7 +21,11 @@ interface MarkdownFieldProps {
 
 const Preview = ({ value }: { value: string }) => (
     <div className="h-full overflow-auto rounded-lg border border-neutral-200 bg-white p-4">
-        {value.trim() ? <Markdown content={value} /> : <p className="text-neutral-400">Nothing to preview yet.</p>}
+        {value.trim() ? (
+            <Markdown content={value} />
+        ) : (
+            <p className="text-neutral-400">Nothing to preview yet.</p>
+        )}
     </div>
 )
 
@@ -65,7 +71,9 @@ export const MarkdownField = ({ id, value = '', onChange }: MarkdownFieldProps) 
                 ]}
                 className="mb-2"
             />
-            <div className="h-[60vh]">{tab === 'write' ? editor : <Preview value={value} />}</div>
+            <div className="h-[60vh]">
+                {tab === 'write' ? editor : <Preview value={value} />}
+            </div>
         </div>
     )
 }

@@ -8,7 +8,10 @@ export const SiteHeader = () => (
             <Link href="/" className="truncate text-lg font-semibold tracking-tight">
                 {env.siteName}
             </Link>
-            <Link href="/blog" className="shrink-0 text-neutral-600 hover:text-neutral-900">
+            <Link
+                href="/blog"
+                className="shrink-0 text-neutral-600 hover:text-neutral-900"
+            >
                 Blog
             </Link>
         </nav>

@@ -37,9 +37,11 @@ describe('getErrorMessage', () => {
     })
 
     it('uses the first backend error message', () => {
-        expect(getErrorMessage(axiosError(400, { errors: [serverError('Bad credentials')] }))).toBe(
-            'Bad credentials',
-        )
+        expect(
+            getErrorMessage(
+                axiosError(400, { errors: [serverError('Bad credentials')] }),
+            ),
+        ).toBe('Bad credentials')
     })
 
     it('falls back to data.message', () => {
@@ -72,7 +74,9 @@ describe('getFieldErrors', () => {
     })
 
     it('ignores server errors whose path is a URL', () => {
-        expect(getFieldErrors(axiosError(400, { errors: [serverError('x')] }))).toEqual([])
+        expect(getFieldErrors(axiosError(400, { errors: [serverError('x')] }))).toEqual(
+            [],
+        )
         expect(getFieldErrors(new Error('x'))).toEqual([])
     })
 })

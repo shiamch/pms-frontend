@@ -21,7 +21,8 @@ export const listBlogs = (params: ListBlogsParams) =>
     api.get<Paginated<Blog>>('/admin/blogs', { params }).then((res) => res.data)
 
 /** Gets one post by id. */
-export const getBlog = (id: number) => api.get<Blog>(`/admin/blogs/${id}`).then((res) => res.data)
+export const getBlog = (id: number) =>
+    api.get<Blog>(`/admin/blogs/${id}`).then((res) => res.data)
 
 /** Creates a post. */
 export const createBlog = (body: BlogInput) =>
@@ -32,4 +33,5 @@ export const updateBlog = (id: number, body: Partial<BlogInput>) =>
     api.patch<Blog>(`/admin/blogs/${id}`, body).then((res) => res.data)
 
 /** Deletes a post. */
-export const deleteBlog = (id: number) => api.delete(`/admin/blogs/${id}`).then(() => undefined)
+export const deleteBlog = (id: number) =>
+    api.delete(`/admin/blogs/${id}`).then(() => undefined)

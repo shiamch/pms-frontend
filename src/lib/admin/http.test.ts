@@ -21,7 +21,11 @@ describe('api client', () => {
     })
 
     it('refreshes once and retries after a 401', async () => {
-        apiMock.onGet('/admin/blogs').replyOnce(401).onGet('/admin/blogs').replyOnce(200, { ok: 1 })
+        apiMock
+            .onGet('/admin/blogs')
+            .replyOnce(401)
+            .onGet('/admin/blogs')
+            .replyOnce(200, { ok: 1 })
         rawMock.onPost(/\/auth\/refresh$/).reply(200)
 
         const res = await api.get('/admin/blogs')
@@ -33,9 +37,9 @@ describe('api client', () => {
     it('shares one refresh between parallel 401s', async () => {
         apiMock.onGet('/a').replyOnce(401).onGet('/a').replyOnce(200, 'a')
         apiMock.onGet('/b').replyOnce(401).onGet('/b').replyOnce(200, 'b')
-        rawMock.onPost(/\/auth\/refresh$/).reply(
-            () => new Promise((resolve) => setTimeout(() => resolve([200]), 20)),
-        )
+        rawMock
+            .onPost(/\/auth\/refresh$/)
+            .reply(() => new Promise((resolve) => setTimeout(() => resolve([200]), 20)))
 
         const [a, b] = await Promise.all([api.get('/a'), api.get('/b')])
 

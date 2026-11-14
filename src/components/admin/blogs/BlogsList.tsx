@@ -23,7 +23,10 @@ const columns: ColumnsType<Blog> = [
         title: 'Title',
         dataIndex: 'title',
         render: (title: string, blog) => (
-            <Link href={`/admin/blogs/${blog.id}/edit`} className="font-medium break-words">
+            <Link
+                href={`/admin/blogs/${blog.id}/edit`}
+                className="font-medium break-words"
+            >
                 {title}
             </Link>
         ),
@@ -106,7 +109,8 @@ export const BlogsList = () => {
     const filtered = Boolean(debouncedQ) || status !== 'all'
 
     const renderBody = () => {
-        if (query.isError) return <Alert type="error" showIcon title={getErrorMessage(query.error)} />
+        if (query.isError)
+            return <Alert type="error" showIcon title={getErrorMessage(query.error)} />
         if (query.isPending) {
             return (
                 <div className="flex justify-center py-12">
@@ -132,7 +136,12 @@ export const BlogsList = () => {
 
     return (
         <>
-            <BlogsFilter q={q} status={status} onQChange={setQ} onStatusChange={setStatus} />
+            <BlogsFilter
+                q={q}
+                status={status}
+                onQChange={setQ}
+                onStatusChange={setStatus}
+            />
             {renderBody()}
             {total > PER_PAGE && (
                 <Pagination

@@ -38,7 +38,12 @@ export const DeleteBlogButton = ({
             okButtonProps={{ danger: true, loading: mutation.isPending }}
             onConfirm={() => mutation.mutateAsync()}
         >
-            <Button danger icon={<DeleteOutlined />} block={block} aria-label={`Delete ${blog.title}`}>
+            <Button
+                danger
+                icon={<DeleteOutlined />}
+                block={block}
+                aria-label={`Delete ${blog.title}`}
+            >
                 Delete
             </Button>
         </Popconfirm>

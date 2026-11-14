@@ -12,11 +12,16 @@ export const PostCard = ({ post }: { post: Blog }) => (
             </Link>
         </h2>
         {post.publishedAt && (
-            <time dateTime={post.publishedAt} className="mt-1 block text-sm text-neutral-500">
+            <time
+                dateTime={post.publishedAt}
+                className="mt-1 block text-sm text-neutral-500"
+            >
                 {formatDate(post.publishedAt)}
             </time>
         )}
-        <p className="mt-2 text-neutral-700 break-words">{toDescription(post.content, post.excerpt)}</p>
+        <p className="mt-2 text-neutral-700 break-words">
+            {toDescription(post.content, post.excerpt)}
+        </p>
     </article>
 )
 

@@ -51,8 +51,8 @@ so the admin side must make adding a new section easy.
 - Admin: `GET/POST /admin/blogs`, `GET/PATCH/DELETE /admin/blogs/:id`.
 - Lists return `{ data, total, currentPage, perPage }`; `perPage` max 100.
 - Blog: `id, title (≤200), slug (unique, letters/numbers/dashes, auto from title if
-  omitted), excerpt (≤500, nullable), content (text), status ('draft'|'published'),
-  publishedAt, createdAt, updatedAt`.
+omitted), excerpt (≤500, nullable), content (text), status ('draft'|'published'),
+publishedAt, createdAt, updatedAt`.
 - CORS allows only `CORS_ORIGINS` with credentials.
 
 **Deployment consequence:** because cookies are `sameSite: strict` and bound to
@@ -62,11 +62,11 @@ On local dev both run on `localhost` (cookies ignore ports), so it just works.
 
 ## Approaches considered
 
-| Option | Trade-off |
-| --- | --- |
+| Option                                                            | Trade-off                                                                                                                                                                                       |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **A. Next.js App Router, public + admin in one project** (chosen) | SSR/ISR for SEO and previews, one repo, one deploy, middleware can guard `/admin` on the server. Needs a Node host or Vercel; admin-dashboard code can't be copied 1:1 because routing differs. |
-| B. Two apps: Next.js/Astro public + Vite SPA admin | Strongest isolation, admin code reuse. Two projects to maintain and deploy for one person. |
-| C. Single Vite SPA with prerender tricks | Simplest, but every new post needs a rebuild for SEO/previews. Fragile. Rejected. |
+| B. Two apps: Next.js/Astro public + Vite SPA admin                | Strongest isolation, admin code reuse. Two projects to maintain and deploy for one person.                                                                                                      |
+| C. Single Vite SPA with prerender tricks                          | Simplest, but every new post needs a rebuild for SEO/previews. Fragile. Rejected.                                                                                                               |
 
 The owner chose **A**. Content format: owner chose **Markdown** (over a rich-text editor),
 because it is simplest to secure and natural for a developer blog.
@@ -86,18 +86,21 @@ because it is simplest to secure and natural for a developer blog.
 ### Routes
 
 Public:
+
 - `/` — home: latest published posts (paginated list).
 - `/blog` — all posts, search box (`q`), pagination via `?page=`.
 - `/blog/[slug]` — single post. 404 page if not found.
 - `sitemap.xml`, `robots.txt` (allow public, disallow `/admin`).
 
 Admin (all `noindex, nofollow`):
+
 - `/admin/login`
 - `/admin` — dashboard home (counts of drafts / published).
 - `/admin/blogs` — list with search, status filter, pagination.
 - `/admin/blogs/new`, `/admin/blogs/[id]/edit`.
 
 ### Public rendering
+
 - Server Components fetch the backend's public API directly from the Next server
   using `BACKEND_API_URL` (server-only env), with ISR `revalidate: 60`.
   A post published in admin appears within a minute. (On-demand revalidation is a
@@ -117,6 +120,7 @@ Admin (all `noindex, nofollow`):
 - `NEXT_PUBLIC_SITE_URL` and `NEXT_PUBLIC_SITE_NAME` env vars for canonical/OG URLs.
 
 ### Admin auth flow
+
 - Browser calls the backend directly with `withCredentials: true`, base URL from
   `NEXT_PUBLIC_BACKEND_API_URL` (exactly like admin-dashboard).
 - `middleware.ts` on `/admin/:path*` (except `/admin/login`): if neither `accessToken`
@@ -130,6 +134,7 @@ Admin (all `noindex, nofollow`):
 - Logout from the header dropdown → `POST /auth/logout`, clear store, go to login.
 
 ### Admin UI
+
 - antd `Layout`: on ≥ `lg` a collapsible `Sider` menu; below `lg` the Sider is
   replaced by a hamburger button opening a `Drawer` with the same menu.
 - Menu config is a single array (key, icon, label, href) so new modules add one entry.
@@ -155,6 +160,7 @@ Admin (all `noindex, nofollow`):
 - Unsaved-changes warning when leaving the form.
 
 ### Security hardening (frontend side)
+
 - Security headers in `next.config` for all routes: `X-Frame-Options: DENY`,
   `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`,
   `Permissions-Policy` minimal, and a Content-Security-Policy that limits `connect-src`
@@ -165,6 +171,7 @@ Admin (all `noindex, nofollow`):
 - Admin JS lives only in admin route bundles.
 
 ### Project hygiene
+
 - ESLint + Prettier, `.env.example` with all vars, README (setup, env, scripts,
   deploy note about same-domain cookies).
 - Tests: Vitest + Testing Library for the login form, the axios refresh interceptor,
@@ -174,6 +181,7 @@ Admin (all `noindex, nofollow`):
   functions, small functions, early returns, JSDoc on exported functions.
 
 ### Local dev
+
 - Next dev server runs on port **5173**, because the backend's `CORS_ORIGINS`
   already allows `http://localhost:5173`. No backend config change. (Builder's call.)
 - `pnpm build` must not require a running backend: public pages and the sitemap are
@@ -181,6 +189,7 @@ Admin (all `noindex, nofollow`):
   must not break the build.
 
 ### Deployment (later, out of scope now)
+
 - Now: local only. Later (separate task): GitHub Actions CI/CD and deploy to an
   AWS EC2 instance.
 - Planned domains: public `shiamchowdhury.com`, admin `admin.shiamchowdhury.com`,
@@ -193,6 +202,7 @@ Admin (all `noindex, nofollow`):
   on the public host. The README documents this plan.
 
 ### Repo
+
 - `git init`, `README.md`, commit, branch `main`, remote
   `https://github.com/shiamch/pms-frontend.git`, push to `main`.
 

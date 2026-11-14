@@ -9,12 +9,19 @@ import { createBlog, updateBlog } from '@/lib/admin/blogs-api'
 import { getErrorMessage, getFieldErrors } from '@/lib/admin/errors'
 import { useUnsavedChanges } from '@/lib/admin/use-unsaved-changes'
 import type { Blog } from '@/types/blog'
-import { toCreateBody, toFormValues, toUpdateBody, type BlogFormValues } from './blog-form-values'
+import {
+    toCreateBody,
+    toFormValues,
+    toUpdateBody,
+    type BlogFormValues,
+} from './blog-form-values'
 import { DeleteBlogButton } from './DeleteBlogButton'
 import { MarkdownField } from './MarkdownField'
 
 const slugNotice = (typed: string, saved: string) =>
-    typed && typed !== saved ? `Saved with slug “${saved}” because “${typed}” was taken.` : null
+    typed && typed !== saved
+        ? `Saved with slug “${saved}” because “${typed}” was taken.`
+        : null
 
 /** Create (no `blog`) or edit (with `blog`) a post. */
 export const BlogForm = ({ blog }: { blog?: Blog }) => {
@@ -34,7 +41,8 @@ export const BlogForm = ({ blog }: { blog?: Blog }) => {
 
     const mutation = useMutation({
         mutationFn: async (values: BlogFormValues) => {
-            if (!saved) return { blog: await createBlog(toCreateBody(values)), changed: true }
+            if (!saved)
+                return { blog: await createBlog(toCreateBody(values)), changed: true }
             const body = toUpdateBody(values, saved)
             if (Object.keys(body).length === 0) return { blog: saved, changed: false }
             return { blog: await updateBlog(saved.id, body), changed: true }
@@ -68,7 +76,12 @@ export const BlogForm = ({ blog }: { blog?: Blog }) => {
         onError: (err) => {
             const fieldErrors = getFieldErrors(err)
             if (fieldErrors.length > 0) {
-                form.setFields(fieldErrors.map(({ name, errors }) => ({ name: name as keyof BlogFormValues, errors })))
+                form.setFields(
+                    fieldErrors.map(({ name, errors }) => ({
+                        name: name as keyof BlogFormValues,
+                        errors,
+                    })),
+                )
                 setError('Please fix the highlighted fields.')
                 return
             }
@@ -79,14 +92,21 @@ export const BlogForm = ({ blog }: { blog?: Blog }) => {
     const unlockSlug = () =>
         modal.confirm({
             title: 'Change the slug?',
-            content: 'Changing the slug of a published post breaks its existing links and search results.',
+            content:
+                'Changing the slug of a published post breaks its existing links and search results.',
             okText: 'Change slug',
             okButtonProps: { danger: true },
             onOk: () => setSlugUnlocked(true),
         })
 
     const saveButton = (
-        <Button type="primary" htmlType="submit" icon={<SaveOutlined />} loading={mutation.isPending} block>
+        <Button
+            type="primary"
+            htmlType="submit"
+            icon={<SaveOutlined />}
+            loading={mutation.isPending}
+            block
+        >
             {saved ? 'Save changes' : 'Save post'}
         </Button>
     )
@@ -101,14 +121,20 @@ export const BlogForm = ({ blog }: { blog?: Blog }) => {
             className="pb-20 md:pb-0"
         >
             {error && <Alert type="error" showIcon title={error} className="mb-4" />}
-            {notice && <Alert type="warning" showIcon title={notice} className="mb-4" closable />}
+            {notice && (
+                <Alert type="warning" showIcon title={notice} className="mb-4" closable />
+            )}
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
                 <div className="min-w-0">
                     <Form.Item
                         label="Title"
                         name="title"
                         rules={[
-                            { required: true, whitespace: true, message: 'Title is required' },
+                            {
+                                required: true,
+                                whitespace: true,
+                                message: 'Title is required',
+                            },
                             { max: 200, message: 'Title must be at most 200 characters' },
                         ]}
                     >
@@ -117,7 +143,13 @@ export const BlogForm = ({ blog }: { blog?: Blog }) => {
                     <Form.Item
                         label="Content"
                         name="content"
-                        rules={[{ required: true, whitespace: true, message: 'Content is required' }]}
+                        rules={[
+                            {
+                                required: true,
+                                whitespace: true,
+                                message: 'Content is required',
+                            },
+                        ]}
                     >
                         <MarkdownField />
                     </Form.Item>
@@ -136,7 +168,9 @@ export const BlogForm = ({ blog }: { blog?: Blog }) => {
                     <Form.Item
                         label="Slug"
                         name="slug"
-                        extra={saved ? undefined : 'Leave empty to build it from the title.'}
+                        extra={
+                            saved ? undefined : 'Leave empty to build it from the title.'
+                        }
                         rules={[
                             {
                                 pattern: /^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$/,
@@ -166,9 +200,18 @@ export const BlogForm = ({ blog }: { blog?: Blog }) => {
                         label="Excerpt"
                         name="excerpt"
                         extra="Shown in lists and link previews."
-                        rules={[{ max: 500, message: 'Excerpt must be at most 500 characters' }]}
+                        rules={[
+                            {
+                                max: 500,
+                                message: 'Excerpt must be at most 500 characters',
+                            },
+                        ]}
                     >
-                        <Input.TextArea autoSize={{ minRows: 3, maxRows: 6 }} showCount maxLength={500} />
+                        <Input.TextArea
+                            autoSize={{ minRows: 3, maxRows: 6 }}
+                            showCount
+                            maxLength={500}
+                        />
                     </Form.Item>
                     {screens.md && saveButton}
                     {saved && (

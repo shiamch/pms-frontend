@@ -14,7 +14,10 @@ import { activeMenuKey, adminMenu } from './menu'
 const { Header, Sider, Content } = Layout
 
 const Brand = () => (
-    <Link href="/admin" className="block truncate px-4 py-4 text-lg font-semibold text-neutral-900">
+    <Link
+        href="/admin"
+        className="block truncate px-4 py-4 text-lg font-semibold text-neutral-900"
+    >
         PMS Admin
     </Link>
 )
@@ -149,7 +152,11 @@ export const AdminShell = ({ children }: { children: ReactNode }) => {
                         />
                     )}
                     <Dropdown menu={userMenu} trigger={['click']} placement="bottomRight">
-                        <Button type="text" aria-label="Account menu" className="flex items-center gap-2">
+                        <Button
+                            type="text"
+                            aria-label="Account menu"
+                            className="flex items-center gap-2"
+                        >
                             <Avatar size="small" icon={<UserOutlined />} />
                             <span className="hidden sm:inline">{user.firstName}</span>
                         </Button>

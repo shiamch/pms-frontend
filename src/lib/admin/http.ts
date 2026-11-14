@@ -20,7 +20,11 @@ let refreshPromise: Promise<void> | null = null
 const refreshSession = () => {
     if (!refreshPromise) {
         refreshPromise = axios
-            .post(`${env.publicBackendApiUrl}/auth/refresh`, {}, { withCredentials: true })
+            .post(
+                `${env.publicBackendApiUrl}/auth/refresh`,
+                {},
+                { withCredentials: true },
+            )
             .then(() => undefined)
             .finally(() => {
                 refreshPromise = null

@@ -15,10 +15,13 @@ export const generateStaticParams = () => [{ slug: '__placeholder__' }]
 // shell first), which keeps them out of search results.
 export const instant = false
 
-export const generateMetadata = async ({ params }: PageProps<'/blog/[slug]'>): Promise<Metadata> => {
+export const generateMetadata = async ({
+    params,
+}: PageProps<'/blog/[slug]'>): Promise<Metadata> => {
     const { slug } = await params
     const post = await getPublishedPost(slug)
-    if (!post || post === 'error') return { title: 'Post not found', robots: { index: false } }
+    if (!post || post === 'error')
+        return { title: 'Post not found', robots: { index: false } }
 
     const description = toDescription(post.content, post.excerpt)
     const url = `/blog/${post.slug}`
@@ -42,14 +45,22 @@ const PostPage = async ({ params }: PageProps<'/blog/[slug]'>) => {
     const { slug } = await params
     const post = await getPublishedPost(slug)
     if (post === null) notFound()
-    if (post === 'error') return <LoadError message="Couldn't load this post right now. Please try again later." />
+    if (post === 'error')
+        return (
+            <LoadError message="Couldn't load this post right now. Please try again later." />
+        )
 
     return (
         <article>
             <header className="mb-8">
-                <h1 className="text-3xl font-bold tracking-tight break-words sm:text-4xl">{post.title}</h1>
+                <h1 className="text-3xl font-bold tracking-tight break-words sm:text-4xl">
+                    {post.title}
+                </h1>
                 {post.publishedAt && (
-                    <time dateTime={post.publishedAt} className="mt-2 block text-neutral-500">
+                    <time
+                        dateTime={post.publishedAt}
+                        className="mt-2 block text-neutral-500"
+                    >
                         {formatDate(post.publishedAt)}
                     </time>
                 )}

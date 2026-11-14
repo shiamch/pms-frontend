@@ -6,7 +6,11 @@ const FALLBACK = '/admin'
  */
 export const safeReturnTo = (value: string | null | undefined) => {
     if (!value) return FALLBACK
-    if (value !== '/admin' && !value.startsWith('/admin/') && !value.startsWith('/admin?')) {
+    if (
+        value !== '/admin' &&
+        !value.startsWith('/admin/') &&
+        !value.startsWith('/admin?')
+    ) {
         return FALLBACK
     }
     if (value.startsWith('//') || /[\\:]|\.\./.test(value)) return FALLBACK

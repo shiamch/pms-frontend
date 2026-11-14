@@ -21,7 +21,9 @@ export const AdminProviders = ({ children }: { children: ReactNode }) => {
         <AntdRegistry>
             <ConfigProvider theme={theme}>
                 <App>
-                    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+                    <QueryClientProvider client={queryClient}>
+                        {children}
+                    </QueryClientProvider>
                 </App>
             </ConfigProvider>
         </AntdRegistry>

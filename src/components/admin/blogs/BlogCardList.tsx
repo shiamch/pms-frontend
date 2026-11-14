@@ -13,7 +13,10 @@ export const BlogCardList = ({ blogs }: { blogs: Blog[] }) => (
     <div className="flex flex-col gap-3">
         {blogs.map((blog) => (
             <Card key={blog.id} size="small">
-                <Link href={`/admin/blogs/${blog.id}/edit`} className="block font-medium break-words text-neutral-900">
+                <Link
+                    href={`/admin/blogs/${blog.id}/edit`}
+                    className="block font-medium break-words text-neutral-900"
+                >
                     {blog.title}
                 </Link>
                 <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-neutral-500">

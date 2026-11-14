@@ -13,7 +13,10 @@ const LatestPosts = async () => {
         <>
             <PostList posts={result.data} />
             {result.total > result.data.length && (
-                <Link href="/blog" className="mt-4 inline-block font-medium hover:underline">
+                <Link
+                    href="/blog"
+                    className="mt-4 inline-block font-medium hover:underline"
+                >
                     All posts →
                 </Link>
             )}
@@ -27,9 +30,13 @@ const HomePage = () => (
             <h1 className="text-3xl font-bold tracking-tight break-words sm:text-4xl">
                 {env.siteName}
             </h1>
-            <p className="mt-2 text-neutral-600">Notes, ideas and things I&apos;m building.</p>
+            <p className="mt-2 text-neutral-600">
+                Notes, ideas and things I&apos;m building.
+            </p>
         </section>
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">Latest posts</h2>
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">
+            Latest posts
+        </h2>
         <Suspense fallback={<p className="py-6 text-neutral-500">Loading posts…</p>}>
             <LatestPosts />
         </Suspense>

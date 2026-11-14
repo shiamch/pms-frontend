@@ -11,7 +11,8 @@ export const metadata: Metadata = {
     alternates: { canonical: '/blog' },
 }
 
-const first = (value: string | string[] | undefined) => (Array.isArray(value) ? value[0] : value)
+const first = (value: string | string[] | undefined) =>
+    Array.isArray(value) ? value[0] : value
 
 const toPage = (value: string | undefined) => {
     const n = Number(value)

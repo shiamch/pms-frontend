@@ -27,12 +27,14 @@ export const BlogEditor = ({ id }: { id: number }) => {
         queryKey: ['blog', id],
         queryFn: () => getBlog(id),
         enabled: valid,
-        retry: (count, err) => !(isAxiosError(err) && err.response?.status === 404) && count < 1,
+        retry: (count, err) =>
+            !(isAxiosError(err) && err.response?.status === 404) && count < 1,
     })
 
     if (!valid) return <NotFound />
     if (query.isError) {
-        if (isAxiosError(query.error) && query.error.response?.status === 404) return <NotFound />
+        if (isAxiosError(query.error) && query.error.response?.status === 404)
+            return <NotFound />
         return <Alert type="error" showIcon title={getErrorMessage(query.error)} />
     }
     if (!query.data) {

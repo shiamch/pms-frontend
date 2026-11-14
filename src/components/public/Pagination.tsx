@@ -11,10 +11,21 @@ const pageHref = (page: number, q?: string) => {
 const linkClass = 'rounded-lg border border-neutral-300 px-3 py-2 hover:bg-neutral-100'
 
 /** Previous / next links for the blog list. Hidden when there is one page. */
-export const Pagination = ({ page, totalPages, q }: { page: number; totalPages: number; q?: string }) => {
+export const Pagination = ({
+    page,
+    totalPages,
+    q,
+}: {
+    page: number
+    totalPages: number
+    q?: string
+}) => {
     if (totalPages <= 1) return null
     return (
-        <nav aria-label="Pagination" className="flex items-center justify-between gap-2 pt-6">
+        <nav
+            aria-label="Pagination"
+            className="flex items-center justify-between gap-2 pt-6"
+        >
             {page > 1 ? (
                 <Link href={pageHref(page - 1, q)} className={linkClass}>
                     ← Newer

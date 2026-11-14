@@ -22,10 +22,18 @@ export const DashboardStats = () => {
         <>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Card>
-                    <Statistic title="Published posts" value={published.data ?? '—'} loading={published.isPending} />
+                    <Statistic
+                        title="Published posts"
+                        value={published.data ?? '—'}
+                        loading={published.isPending}
+                    />
                 </Card>
                 <Card>
-                    <Statistic title="Drafts" value={drafts.data ?? '—'} loading={drafts.isPending} />
+                    <Statistic
+                        title="Drafts"
+                        value={drafts.data ?? '—'}
+                        loading={drafts.isPending}
+                    />
                 </Card>
             </div>
             <Link href="/admin/blogs/new" className="mt-4 inline-block">

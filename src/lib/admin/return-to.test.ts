@@ -4,7 +4,9 @@ import { safeReturnTo } from './return-to'
 describe('safeReturnTo', () => {
     it('keeps admin paths', () => {
         expect(safeReturnTo('/admin/blogs')).toBe('/admin/blogs')
-        expect(safeReturnTo('/admin/blogs?status=draft')).toBe('/admin/blogs?status=draft')
+        expect(safeReturnTo('/admin/blogs?status=draft')).toBe(
+            '/admin/blogs?status=draft',
+        )
     })
 
     it.each([

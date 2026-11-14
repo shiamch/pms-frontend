@@ -29,7 +29,12 @@ const post = (id: number, title: string, status: 'draft' | 'published') => ({
     updatedAt: '2026-11-02T00:00:00Z',
 })
 
-const page = (data: unknown[], total = data.length) => ({ data, total, currentPage: 1, perPage: 10 })
+const page = (data: unknown[], total = data.length) => ({
+    data,
+    total,
+    currentPage: 1,
+    perPage: 10,
+})
 
 const renderList = () =>
     render(
@@ -61,7 +66,9 @@ describe('BlogsList', () => {
         renderList()
         await screen.findAllByText('First post')
         vi.useFakeTimers()
-        fireEvent.change(screen.getByPlaceholderText('Search by title'), { target: { value: 'react' } })
+        fireEvent.change(screen.getByPlaceholderText('Search by title'), {
+            target: { value: 'react' },
+        })
         await act(async () => {
             vi.advanceTimersByTime(400)
         })
@@ -89,6 +96,8 @@ describe('BlogsList', () => {
         blogsApi.listBlogs.mockResolvedValue(page([]))
         renderList()
         expect(await screen.findByText('No posts yet')).toBeInTheDocument()
-        expect(screen.getAllByRole('link', { name: /new post/i }).length).toBeGreaterThan(0)
+        expect(screen.getAllByRole('link', { name: /new post/i }).length).toBeGreaterThan(
+            0,
+        )
     })
 })

@@ -16,7 +16,14 @@ vi.mock('next/navigation', () => ({
 const authApi = vi.hoisted(() => ({ login: vi.fn(), self: vi.fn(), logout: vi.fn() }))
 vi.mock('@/lib/admin/auth-api', () => authApi)
 
-const owner = { id: 1, firstName: 'Shiam', lastName: 'C', email: 'o@x.com', createdAt: '', updatedAt: '' }
+const owner = {
+    id: 1,
+    firstName: 'Shiam',
+    lastName: 'C',
+    email: 'o@x.com',
+    createdAt: '',
+    updatedAt: '',
+}
 
 const renderForm = () =>
     render(
@@ -51,7 +58,10 @@ describe('LoginForm', () => {
         await userEvent.click(screen.getByRole('button', { name: /log in/i }))
 
         await waitFor(() => expect(replace).toHaveBeenCalledWith('/admin/blogs'))
-        expect(authApi.login).toHaveBeenCalledWith({ email: 'o@x.com', password: 'secret' })
+        expect(authApi.login).toHaveBeenCalledWith({
+            email: 'o@x.com',
+            password: 'secret',
+        })
     })
 
     it('ignores an unsafe returnTo', async () => {
@@ -72,7 +82,11 @@ describe('LoginForm', () => {
         authApi.login.mockRejectedValue(
             new AxiosError('fail', 'ERR', config, undefined, {
                 status: 400,
-                data: { errors: [{ msg: 'Email or password does not match.', location: 'server' }] },
+                data: {
+                    errors: [
+                        { msg: 'Email or password does not match.', location: 'server' },
+                    ],
+                },
                 statusText: '',
                 headers: {},
                 config,
@@ -84,7 +98,9 @@ describe('LoginForm', () => {
         await userEvent.type(screen.getByLabelText('Password'), 'wrong')
         await userEvent.click(screen.getByRole('button', { name: /log in/i }))
 
-        expect(await screen.findByRole('alert')).toHaveTextContent('Email or password does not match.')
+        expect(await screen.findByRole('alert')).toHaveTextContent(
+            'Email or password does not match.',
+        )
     })
 
     it('redirects away when already logged in', async () => {

@@ -47,7 +47,9 @@ export const LoginForm = () => {
                 <Typography.Title level={3} style={{ marginTop: 0 }}>
                     Sign in
                 </Typography.Title>
-                <Typography.Paragraph type="secondary">Owner access only.</Typography.Paragraph>
+                <Typography.Paragraph type="secondary">
+                    Owner access only.
+                </Typography.Paragraph>
                 {mutation.isError && (
                     <Alert
                         type="error"
@@ -71,16 +73,33 @@ export const LoginForm = () => {
                             { type: 'email', message: 'Please enter a valid email' },
                         ]}
                     >
-                        <Input prefix={<MailOutlined />} type="email" autoComplete="username" size="large" />
+                        <Input
+                            prefix={<MailOutlined />}
+                            type="email"
+                            autoComplete="username"
+                            size="large"
+                        />
                     </Form.Item>
                     <Form.Item
                         label="Password"
                         name="password"
-                        rules={[{ required: true, message: 'Please enter your password' }]}
+                        rules={[
+                            { required: true, message: 'Please enter your password' },
+                        ]}
                     >
-                        <Input.Password prefix={<LockOutlined />} autoComplete="current-password" size="large" />
+                        <Input.Password
+                            prefix={<LockOutlined />}
+                            autoComplete="current-password"
+                            size="large"
+                        />
                     </Form.Item>
-                    <Button type="primary" htmlType="submit" block size="large" loading={mutation.isPending}>
+                    <Button
+                        type="primary"
+                        htmlType="submit"
+                        block
+                        size="large"
+                        loading={mutation.isPending}
+                    >
                         Log in
                     </Button>
                 </Form>

@@ -12,6 +12,8 @@ const publicBackendApiUrl = stripTrailingSlash(
 export const env = {
     publicBackendApiUrl,
     backendApiUrl: stripTrailingSlash(process.env.BACKEND_API_URL || publicBackendApiUrl),
-    siteUrl: stripTrailingSlash(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:5173'),
+    siteUrl: stripTrailingSlash(
+        process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:5173',
+    ),
     siteName: process.env.NEXT_PUBLIC_SITE_NAME || 'Shiam Chowdhury',
 }

@@ -24,7 +24,9 @@ export const OgCard = ({ title }: { title?: string }) => {
                 color: '#fafafa',
             }}
         >
-            <div style={{ display: 'flex', fontSize: 32, color: '#a3a3a3' }}>{env.siteName}</div>
+            <div style={{ display: 'flex', fontSize: 32, color: '#a3a3a3' }}>
+                {env.siteName}
+            </div>
             <div
                 style={{
                     display: 'flex',
@@ -36,7 +38,9 @@ export const OgCard = ({ title }: { title?: string }) => {
             >
                 {heading.length > 140 ? `${heading.slice(0, 137)}…` : heading}
             </div>
-            <div style={{ display: 'flex', width: 120, height: 8, background: '#fafafa' }} />
+            <div
+                style={{ display: 'flex', width: 120, height: 8, background: '#fafafa' }}
+            />
         </div>
     )
 }
