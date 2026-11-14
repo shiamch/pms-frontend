@@ -4,7 +4,9 @@ import { useAuthStore } from './auth-store'
 
 type RetryableConfig = InternalAxiosRequestConfig & { _isRetry?: boolean }
 
-const NO_REFRESH_URLS = ['/auth/login', '/auth/refresh', '/auth/logout']
+// Logout is not listed: with an expired access token it must refresh and retry,
+// or the refresh cookie would survive and the owner would stay logged in.
+const NO_REFRESH_URLS = ['/auth/login', '/auth/refresh']
 
 /** Axios instance for the backend API. Sends the auth cookies with every request. */
 export const api = axios.create({

@@ -46,4 +46,9 @@ describe('Markdown', () => {
         const code = renderMd('```ts\nconst a = 1\n```').querySelector('code')!
         expect(code.className).toContain('hljs')
     })
+
+    it('wraps tables so wide ones scroll inside their own box', () => {
+        const table = renderMd('|a|b|\n|-|-|\n|1|2|').querySelector('table')!
+        expect(table.parentElement).toHaveClass('overflow-x-auto')
+    })
 })

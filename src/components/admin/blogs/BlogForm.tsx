@@ -54,7 +54,9 @@ export const BlogForm = ({ blog }: { blog?: Blog }) => {
         onSuccess: async ({ blog: result, changed }, values) => {
             const typedSlug = values.slug.trim().toLowerCase()
             const changedSlug = slugNotice(typedSlug, result.slug)
-            setDirty(false)
+            // Edits typed while the save was running are still unsaved.
+            const current = form.getFieldsValue(true) as BlogFormValues
+            setDirty(Object.keys(toUpdateBody(current, result)).length > 0)
             if (!changed) {
                 message.info('No changes to save')
                 return

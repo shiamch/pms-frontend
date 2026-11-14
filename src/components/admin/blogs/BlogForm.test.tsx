@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { AxiosError, AxiosHeaders } from 'axios'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { useUnsavedStore } from '@/lib/admin/unsaved-store'
 import type { Blog } from '@/types/blog'
 import { AdminProviders } from '../AdminProviders'
 import { BlogForm } from './BlogForm'
@@ -157,5 +158,26 @@ describe('BlogForm', () => {
 
         expect(await screen.findByText('Cannot reach the server.')).toBeInTheDocument()
         expect(screen.getByLabelText('Content')).toHaveValue('Long draft')
+    })
+
+    it('stays dirty when the owner keeps typing while a save is running', async () => {
+        let finishSave: (blog: Blog) => void = () => {}
+        blogsApi.updateBlog.mockReturnValue(
+            new Promise<Blog>((resolve) => (finishSave = resolve)),
+        )
+        renderForm(published)
+        fireEvent.change(screen.getByLabelText('Content'), {
+            target: { value: 'First edit' },
+        })
+        await save()
+        fireEvent.change(screen.getByLabelText('Content'), {
+            target: { value: 'First edit, then more' },
+        })
+
+        finishSave({ ...published, content: 'First edit' })
+
+        await waitFor(() => expect(blogsApi.updateBlog).toHaveBeenCalled())
+        await new Promise((resolve) => setTimeout(resolve, 50))
+        expect(useUnsavedStore.getState().dirty).toBe(true)
     })
 })

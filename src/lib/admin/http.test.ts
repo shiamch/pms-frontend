@@ -61,4 +61,18 @@ describe('api client', () => {
         await expect(api.post('/auth/login', {})).rejects.toBeTruthy()
         expect(rawMock.history.post).toHaveLength(0)
     })
+
+    it('refreshes and retries logout when the access token has expired', async () => {
+        apiMock
+            .onPost('/auth/logout')
+            .replyOnce(401)
+            .onPost('/auth/logout')
+            .replyOnce(200, { ok: 1 })
+        rawMock.onPost(/\/auth\/refresh$/).reply(200)
+
+        const res = await api.post('/auth/logout')
+
+        expect(res.data).toEqual({ ok: 1 })
+        expect(rawMock.history.post).toHaveLength(1)
+    })
 })

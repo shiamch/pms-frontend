@@ -1,4 +1,4 @@
-import type { AnchorHTMLAttributes } from 'react'
+import type { AnchorHTMLAttributes, TableHTMLAttributes } from 'react'
 import type { ExtraProps } from 'react-markdown'
 import ReactMarkdown from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
@@ -38,6 +38,17 @@ const Link = ({
     )
 }
 
+// Wide tables scroll inside their own box instead of widening the page on phones.
+const Table = ({
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- drop the hast node so it is not rendered as an attribute
+    node,
+    ...rest
+}: TableHTMLAttributes<HTMLTableElement> & ExtraProps) => (
+    <div className="overflow-x-auto">
+        <table {...rest} />
+    </div>
+)
+
 /**
  * Renders untrusted Markdown safely: raw HTML is ignored, output is sanitized,
  * code is highlighted and external links open in a new tab.
@@ -48,7 +59,7 @@ export const Markdown = ({ content }: { content: string }) => (
         <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             rehypePlugins={[rehypeSanitize, rehypeHighlight]}
-            components={{ a: Link }}
+            components={{ a: Link, table: Table }}
         >
             {content}
         </ReactMarkdown>
