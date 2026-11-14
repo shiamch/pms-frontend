@@ -20,3 +20,12 @@ if (typeof window !== 'undefined' && !window.matchMedia) {
             dispatchEvent: () => false,
         }) as MediaQueryList
 }
+
+// antd's Select dropdown measures itself with ResizeObserver, which jsdom lacks.
+if (typeof globalThis.ResizeObserver === 'undefined') {
+    globalThis.ResizeObserver = class {
+        observe() {}
+        unobserve() {}
+        disconnect() {}
+    } as unknown as typeof ResizeObserver
+}
